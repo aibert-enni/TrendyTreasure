@@ -1,21 +1,26 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from "../assets/logo.svg"
 import { ROUTER_PATHS } from "../router/types"
 import { User } from "../models/apiModels"
 import { appApi } from "../services/ApiService"
+import { useState } from "react"
 
 const SignUp = () => {
+    const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors } } = useForm<User>()
 
+    const [error, setError] = useState<string>('')
+
     const [createUser] = appApi.useCreateUserMutation()
 
-    const onSubmit: SubmitHandler<User> = (data) => {
+    const onSubmit: SubmitHandler<User> = async (data) => {
         createUser({
             username: data.username,
             password: data.password
-        })
+        }).unwrap().catch(error => setError(error))
+        if (error) navigate(ROUTER_PATHS.LOGIN)
     }
 
     return (
@@ -24,6 +29,7 @@ const SignUp = () => {
                 <img className='w-12' src={logo} alt="" />
             </div>
             <div className="p-5 border rounded text-main-blue border-main-blue">
+                {error && <p className='text-error'>{error}</p>}
                 <p className="text-3xl font-jost font-normal">Sign up</p>
                 <form onSubmit={handleSubmit(onSubmit)} className="my-5 w-[312px] flex flex-col gap-5 font-lato">
                     <div className="flex flex-col gap-1">

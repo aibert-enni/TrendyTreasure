@@ -18,8 +18,8 @@ export default {
         'second-blue': '#0769da'
       },
       fontFamily: {
-        'lato': ['Lato', 'sans-serif'],
-        'jost': ['Jost', 'sans-serif']
+        'poppins': ['Poppins', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
       },
       gridTemplateColumns: {
         'header': '20% 70% 10%'

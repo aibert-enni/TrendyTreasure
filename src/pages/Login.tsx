@@ -5,6 +5,7 @@ import { appApi } from '../services/ApiService'
 import { ROUTER_PATHS } from '../router/types'
 
 import logo from "../assets/logo.svg"
+import { useState } from 'react'
 
 const Login = () => {
 
@@ -12,16 +13,21 @@ const Login = () => {
 
     const [fetchUser] = appApi.useLazyFetchUserQuery()
 
+    const [error, setError] = useState<string>('')
+
     const navigate = useNavigate()
 
-    const onSubmit: SubmitHandler<User> = (data) => {
-        fetchUser({
+    const onSubmit: SubmitHandler<User> = async (data) => {
+        const res = await fetchUser({
             username: data.username,
             password: data.password
-        }).then(data => {
-            document.cookie = `token=${data.data?.cookie}; SameSite=Lax; Secure`
         })
-        navigate(ROUTER_PATHS.HOME)
+        if (res.isError) {
+            setError('Something wrong')
+        } else {
+            document.cookie = `token=${res.data?.cookie}; SameSite=Lax; Secure`
+        }
+        if (error) navigate(ROUTER_PATHS.HOME)
     }
 
     return (
@@ -30,6 +36,7 @@ const Login = () => {
                 <img className='w-12' src={logo} alt="" />
             </div>
             <div className="p-5 border text-main-blue rounded border-main-blue">
+                {error && <p className='text-error'>{error}</p>}
                 <p className="text-3xl font-jost font-normal">Login</p>
                 <form onSubmit={handleSubmit(onSubmit)} className="my-5 font-lato w-[312px] flex flex-col gap-5">
                     <div className="flex flex-col gap-1">

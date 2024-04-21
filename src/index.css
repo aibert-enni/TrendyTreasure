@@ -10,7 +10,7 @@
     @apply p-1
   }
   .button {
-    @apply px-10 h-[40px] bg-main-blue font-normal font-lato uppercase text-white flex items-center w-fit;
+    @apply px-10 h-[40px] bg-main-blue font-normal font-poppins uppercase text-white flex items-center w-fit;
   }
   .form-input {
     @apply h-11 border border-[#D9D9D9] focus:outline-none p-5 mt-2;
@@ -21,4 +21,8 @@
   .logo {
     @apply w-12
   }
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
 }
