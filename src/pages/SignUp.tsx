@@ -1,10 +1,13 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
-import logo from "../assets/logo.svg"
 import { ROUTER_PATHS } from "../router/types"
 import { User } from "../models/apiModels"
 import { appApi } from "../services/ApiService"
 import { useState } from "react"
+import { Container, Box, Typography, CircularProgress } from "@mui/material"
+import logo from "../assets/logo.svg"
+import mockup from "../assets/SignMockups.png"
+import PasswordInfo from "../components/auth/PasswordInfo"
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -13,57 +16,97 @@ const SignUp = () => {
 
     const [error, setError] = useState<string>('')
 
-    const [createUser] = appApi.useCreateUserMutation()
+    const [createUser, result] = appApi.useCreateUserMutation()
+
+    console.log(import.meta)
 
     const onSubmit: SubmitHandler<User> = async (data) => {
-        createUser({
+        await createUser({
             username: data.username,
             password: data.password
-        }).unwrap().catch(error => setError(error))
-        if (error) navigate(ROUTER_PATHS.LOGIN)
+        })
+        if (result.isSuccess) {
+            navigate(ROUTER_PATHS.LOGIN)
+        } else {
+            setError('Something wrong')
+        }
     }
 
     return (
-        <div className="container-large flex flex-col items-center">
-            <div className='py-5'>
-                <img className='w-12' src={logo} alt="" />
-            </div>
-            <div className="p-5 border rounded text-main-blue border-main-blue">
-                {error && <p className='text-error'>{error}</p>}
-                <p className="text-3xl font-jost font-normal">Sign up</p>
-                <form onSubmit={handleSubmit(onSubmit)} className="my-5 w-[312px] flex flex-col gap-5 font-lato">
-                    <div className="flex flex-col gap-1">
-                        <label className="font-bold">Username</label>
-                        <input {...register('username', {
-                            required: true,
-                            validate: async (value) => {
-                                if (!/^[0-9A-Za-z]{6,16}$/.test(value)) {
-                                    return "Invalid login"
+        <Container>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mt: 10,
+                gap: 8
+            }}>
+                <img className='max-h-[416px]' src={mockup} alt="two iphone" />
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    border: '0.1px solid rgba(102, 102, 102, 0.35)',
+                    borderRadius: 5,
+                    p: '40px',
+                    bgcolor: 'white'
+                }}>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        py: 1,
+                        gap: 4
+                    }}>
+                        <img className='h-14' src={logo} alt="shop logo" />
+                        <p className="text-3xl text-[#333333] font-poppins font-medium">Sign up</p>
+                    </Box>
+                    <form onSubmit={handleSubmit(onSubmit)} className="my-5 font-lato w-[312px] flex flex-col gap-5">
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[#666666]">Username</label>
+                            <input {...register('username', {
+                                required: true,
+                                validate: async (value) => {
+                                    if (!/^[0-9A-Za-z]{6,16}$/.test(value)) {
+                                        return "Invalid login"
+                                    }
+                                    return true
                                 }
-                                return true
-                            }
-                        })} className="focus:outline-none border rounded px-2 py-1 border-[#a6a6a6]" type="text" />
-                        {errors.username && <p className='text-error'>{errors.username.message}</p>}
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <label className="font-bold">Password</label>
-                        <input {...register('password', {
-                            required: true,
-                            validate: (value) => {
-                                if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(value)) {
-                                    return "Use at least 1 upper letter, 1 lower letter, 1 digit, 1 special character and minimum 8 characters"
+                            })} className="focus:outline-none p-2 border rounded-xl border-[rgba(102, 102, 102, 0.35)]" type="text" />
+                            {errors.username && <Typography color='rgba(102,102,102,0.6)' fontWeight='400'>{errors.username.message}</Typography>}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[#666666]">Password</label>
+                            <input {...register('password', {
+                                required: true,
+                                validate: (value) => {
+                                    if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(value)) {
+                                        return ''
+                                    }
+                                    return
                                 }
-                            }
-                        })} className="focus:outline-none border rounded px-2 py-1 border-[#a6a6a6]" type="text" />
-                        {errors.password && <p className='text-error'>{errors.password.message}</p>}
-                    </div>
-                    <button className="bg-main-blue rounded text-white py-2">Sign up</button>
-                </form>
-                <Link className='font-jost' to={ROUTER_PATHS.LOGIN}>
-                    Already have account? <span className='text-blue font-bold'>Login</span>
-                </Link>
-            </div>
-        </div>
+                            })} className="focus:outline-none p-2 border rounded-xl border-[rgba(102, 102, 102, 0.35)]" type="text" />
+                            {errors.password && <PasswordInfo />}
+                        </div>
+                        {error && <Typography textAlign='center' color='rgba(102, 102, 102, 0.35)' fontWeight='400'>{error}</Typography>}
+                        <button className="bg-[#111111] rounded-2xl text-white py-2">{result.isLoading ? <CircularProgress color='inherit' /> : "Sign up"}</button>
+                    </form>
+
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1
+                    }}>
+                        <Typography color='#333333'>
+                            Already have account?
+                        </Typography>
+                        <Link className='underline font-medium font-poppins' to={ROUTER_PATHS.LOGIN}>
+                            Login
+                        </Link>
+                    </Box>
+                </Box>
+            </Box>
+        </Container>
     )
 }
 

@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { User } from "../models/apiModels";
+import { SignInResponse, User } from "../models/apiModels";
 
 export const appApi = createApi({
   reducerPath: "appApi",
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api' }),
   endpoints: (build) => ({
     createUser: build.mutation<User, User>({
       query: (user: User) => ({
@@ -13,17 +13,17 @@ export const appApi = createApi({
         body: user
     })
     }),
-    fetchUser: build.query<User, User>({
+    fetchUser: build.query<SignInResponse, User>({
       query: (user: User) => ({
-        url: '/auth/signup',
+        url: '/auth/signin',
         method: "POST",
         body: user
     }),
-    transformResponse(data: User, meta) : User{
+    transformResponse(data: SignInResponse, meta) : SignInResponse{
       const flag = meta?.response?.headers.get("flag")
       return {
+        token: data.token,
         username: data.username,
-        password: data.password,
         authorized: flag == 'true' ? true : false
       }
     }

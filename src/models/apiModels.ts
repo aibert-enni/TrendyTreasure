@@ -5,5 +5,10 @@ export interface Authorized {
 export interface User extends  Authorized{
     username: string,
     password: string,
-    cookie?: string
+    token?: string
+}
+
+export interface SignInResponse extends Authorized{
+    token: string,
+    username: string
 }
