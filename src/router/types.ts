@@ -2,6 +2,7 @@ export enum ROUTER_PATHS {
     HOME = "/",
     SINGUP = "/signUp",
     LOGIN = "/login",
+    CREATE_PRODUCT = "/createProduct"
 }
 
 export interface IRoute {

@@ -5,9 +5,9 @@ import { User } from "../models/apiModels"
 import { appApi } from "../services/ApiService"
 import { useState } from "react"
 import { Container, Box, Typography, CircularProgress } from "@mui/material"
-import logo from "../assets/logo.svg"
 import mockup from "../assets/SignMockups.png"
 import PasswordInfo from "../components/auth/PasswordInfo"
+import Logo from "../components/Logo"
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -58,7 +58,7 @@ const SignUp = () => {
                         py: 1,
                         gap: 4
                     }}>
-                        <img className='h-14' src={logo} alt="shop logo" />
+                        <Logo />
                         <p className="text-3xl text-[#333333] font-poppins font-medium">Sign up</p>
                     </Box>
                     <form onSubmit={handleSubmit(onSubmit)} className="my-5 font-lato w-[312px] flex flex-col gap-5">
@@ -89,7 +89,7 @@ const SignUp = () => {
                             {errors.password && <PasswordInfo />}
                         </div>
                         {error && <Typography textAlign='center' color='rgba(102, 102, 102, 0.35)' fontWeight='400'>{error}</Typography>}
-                        <button className="bg-[#111111] rounded-2xl text-white py-2">{result.isLoading ? <CircularProgress color='inherit' /> : "Sign up"}</button>
+                        <button disabled={result.isLoading} className="bg-[#111111] rounded-2xl text-white py-2">{result.isLoading ? <CircularProgress color='inherit' /> : "Sign up"}</button>
                     </form>
 
                     <Box sx={{

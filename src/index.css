@@ -9,8 +9,8 @@
   .nav-wrapper {
     @apply p-1
   }
-  .button {
-    @apply px-10 h-[40px] bg-main-blue font-normal font-poppins uppercase text-white flex items-center w-fit;
+  .button-1 {
+    @apply h-[56px] w-[184px] text-center font-medium font-poppins capitalize border rounded flex items-center;
   }
   .form-input {
     @apply h-11 border border-[#D9D9D9] focus:outline-none p-5 mt-2;

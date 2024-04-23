@@ -3,11 +3,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { User } from '../models/apiModels'
 import { appApi } from '../services/ApiService'
 import { ROUTER_PATHS } from '../router/types'
-
-import logo from "../assets/logo.svg"
-import mockup from "../assets/SignMockups.png"
 import { useState } from 'react'
 import { Box, CircularProgress, Container, Typography } from '@mui/material'
+import Logo from '../components/Logo'
+import mockup from "../assets/SignMockups.png"
 
 const Login = () => {
 
@@ -59,7 +58,7 @@ const Login = () => {
                         py: 1,
                         gap: 4
                     }}>
-                        <img className='h-14' src={logo} alt="shop logo" />
+                        <Logo />
                         <p className="text-3xl text-[#333333] font-poppins font-medium">Login</p>
                     </Box>
                     <form onSubmit={handleSubmit(onSubmit)} className="my-5 font-lato w-[312px] flex flex-col gap-5">
@@ -76,7 +75,7 @@ const Login = () => {
                             })} className="focus:outline-none p-2 border rounded-xl border-[rgba(102, 102, 102, 0.35)]" type="text" />
                         </div>
                         {error && <Typography textAlign='center' color='rgba(102, 102, 102, 0.35)' fontWeight='400'>{error}</Typography>}
-                        <button className="bg-[#111111] rounded-2xl text-white py-2">{result.isLoading ? <CircularProgress color='inherit' /> : "Sign in"}</button>
+                        <button disabled={result.isLoading} className="bg-[#111111] rounded-2xl text-white py-2">{result.isLoading ? <CircularProgress color='inherit' /> : "Sign in"}</button>
                     </form>
                     <Box sx={{
                         display: 'flex',
