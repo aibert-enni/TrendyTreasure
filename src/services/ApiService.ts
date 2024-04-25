@@ -17,14 +17,15 @@ export const appApi = createApi({
       query: (user: User) => ({
         url: '/auth/signup',
         method: "POST",
-        body: user
+        body: user,
+        mode: 'no-cors',
     })
     }),
     fetchUser: build.query<SignInResponse, User>({
       query: (user: User) => ({
         url: '/auth/signin',
-        method: "POST",
-        body: user
+        body: user,
+        mode: 'no-cors',
       }),
       transformResponse(data: SignInResponse, meta) : SignInResponse{
         const flag = meta?.response?.headers.get("flag")
@@ -37,9 +38,10 @@ export const appApi = createApi({
     }),
     createProduct: build.mutation<Product, Product>({
       query: (product: Product) => ({
-        url: 'createProduct',
+        url: '/createProduct',
         method: 'POST',
-        body: product
+        body: product,
+        mode: 'no-cors',
       })
     })
 })

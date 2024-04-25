@@ -51,7 +51,7 @@ const CreateProduct = () => {
             name: data.name,
             price: data.price,
             description: data.description,
-            dataUrlImage: imageBase64
+            dataUrlImage: imageBase64.replace('data:image/jpeg;base64,', '')
         })
         console.log(result.status)
     }
@@ -63,7 +63,7 @@ const CreateProduct = () => {
                     Create product
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', my: 10, gap: '48px' }}>
-                    <Box bgcolor='grey' width={536} height={516}>
+                    <Box width={536} height={516}>
                         {imageBase64.length > 0 && <img className='w-[536px] h-[516px]' src={imageBase64}></img>}
                     </Box>
                     <Form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-[32px]'>
@@ -81,7 +81,11 @@ const CreateProduct = () => {
                                 </InputAdornment>
                             )
                         }} sx={{
-                            '.MuiInputBase-input': { fontFamily: '700', fontSize: '32px' }
+                            '.MuiInputBase-input': { fontFamily: '700', fontSize: '32px' },
+                            'input::-webkit-inner-spin-button, input::-webkit-outer-spin-button': {
+                                'WebkitAppearance': 'none',
+                                'margin': '0'
+                            }
                         }} variant='standard' error={errors.price ? true : false} helperText={errors.price && "Only number"} type='number' placeholder='Price' />
                         <TextField {...register('description', {
                             required: true
