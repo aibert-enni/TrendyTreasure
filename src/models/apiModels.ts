@@ -19,3 +19,8 @@ export interface Product {
     description: string,
     dataUrlImage: string
 }
+
+export interface ProductsPaginationResponse {
+    products: Product[],
+    pageSize: number
+}

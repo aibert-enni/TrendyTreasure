@@ -3,6 +3,7 @@ import { IRoute, ROUTER_PATHS } from '../router/types'
 import Header from '../components/header/Header'
 import Home from './Home'
 import CreateProduct from './CreateProduct'
+import Products from './Products'
 
 export const routes: IRoute[] = [
   {
@@ -12,6 +13,10 @@ export const routes: IRoute[] = [
   {
     path: ROUTER_PATHS.CREATE_PRODUCT,
     element: <CreateProduct />
+  },
+  {
+    path: ROUTER_PATHS.PRODUCTS,
+    element: <Products />
   }
 ]
 

@@ -14,6 +14,10 @@ const Navs = () => {
             path: ROUTER_PATHS.HOME
         },
         {
+            text: "Shop",
+            path: ROUTER_PATHS.PRODUCTS
+        },
+        {
             text: "About",
             path: ROUTER_PATHS.HOME
         },
